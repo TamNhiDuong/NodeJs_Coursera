@@ -1,0 +1,23 @@
+{
+  "name": "node-express",
+  "version": "1.0.0",
+  "description": "Node Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TamNhiDuong/NodeJs_Coursera.git"
+  },
+  "author": "Nhi Duong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TamNhiDuong/NodeJs_Coursera/issues"
+  },
+  "homepage": "https://github.com/TamNhiDuong/NodeJs_Coursera#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
