@@ -6,16 +6,18 @@ const port = 3000;
 
 const app = express();
 
+//use Morgan to retrieve files
 const morgan = require('morgan');
 app.use(morgan('dev'));
 app.use(express.static(__dirname + '/public'));
 
+//Use body Parser
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 //Use Router
-const dishRouter = require('./routes/promoRouter');
-app.use('/promotions', dishRouter);
+const dishRouter = require('./routes/leaderRouter');
+app.use('/leaders', dishRouter);
 
 app.use((req, res, next) => {
     console.log(req.headers);
