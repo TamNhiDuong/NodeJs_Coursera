@@ -16,8 +16,14 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 //Use Router
-const dishRouter = require('./routes/leaderRouter');
-app.use('/leaders', dishRouter);
+const dishRouter = require('./routes/dishRouter');
+app.use('/dishes', dishRouter);
+
+const promoRouter = require('./routes/promoRouter');
+app.use('/promotions', promoRouter);
+
+const leaderRouter = require('./routes/leaderRouter');
+app.use('/leaders', leaderRouter);
 
 app.use((req, res, next) => {
     console.log(req.headers);
