@@ -37,7 +37,7 @@ var dishSchema = new Schema({
         type: String,
         required: true
     },
-    category: {
+    category: { 
         type: String,
         required: true
     },
