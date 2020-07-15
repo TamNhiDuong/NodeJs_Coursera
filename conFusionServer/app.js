@@ -47,58 +47,38 @@ app.use(session({
   store: new FileStore()
 }));
 
+//Go to those routes before authentication
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
 //AUTHENTICATION
-function auth(req, res, next) {
-  console.log(req.headers);
-  console.log(req.signedCookies);
+function auth (req, res, next) {
   console.log(req.session);
 
-  //If cookies/session is not exist, then check the auth header as normal
-  if (!req.session.user) {
-    var authHeader = req.headers.authorization;
-    if (!authHeader) {
-      var err = new Error('You are not authenticated!');
-      res.setHeader('WWW-Authenticate', 'Basic');
-      err.status = 401;
-      next(err);
-      return;
-    }
-    //Extract username and password
-    var auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
-    var user = auth[0];
-    var pass = auth[1];
-    if (user == 'admin' && pass == 'password') {
-      req.session.user = 'admin';
-      next(); // authorized
-    } else {
-      var err = new Error('You are not authenticated!');
-      res.setHeader('WWW-Authenticate', 'Basic');
-      err.status = 401;
-      next(err);
-    }
+if(!req.session.user) {
+    var err = new Error('You are not authenticated!');
+    err.status = 403;
+    return next(err);
+}
+else {
+  if (req.session.user === 'authenticated') {
+    next();
   }
-  //If cookie is already exist
   else {
-    if (req.session.user === 'admin') {
-      next();
-    } else {
-      var err = new Error('You are not authenticated!');
-      err.status = 401;
-      next(err);
-    }
+    var err = new Error('You are not authenticated!');
+    err.status = 403;
+    return next(err);
   }
 }
+}
+
 app.use(auth);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/dishes', dishRouter);
 app.use('/promotions', promoRouter);
 app.use('/leaders', leaderRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
