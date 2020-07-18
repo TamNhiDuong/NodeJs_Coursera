@@ -8,6 +8,7 @@ var FileStore = require('session-file-store')(session);
 
 var passport = require('passport');
 var authenticate = require('./authenticate');
+var config = require('./config');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -20,7 +21,7 @@ var app = express();
 //Use Mongoose in NodeJs Server
 const Dishes = require('./models/dishes');
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/conFusion';
+const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 connect.then((db) => {
   console.log('Connected correctly to server');
@@ -42,24 +43,24 @@ app.use(express.urlencoded({
 //app.use(cookieParser('12345-67890-09876-54321'));
 
 //Setup Express Session instead of Cookie
-app.use(session({
+/*app.use(session({
   name: 'session-id',
   secret: '12345-67890-09876-54321',
   saveUninitialized: false,
   resave: false,
   store: new FileStore()
-}));
+}));*/
 
 //PASSPORT
 app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.session());
 
 //Go to those routes before authentication
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 //AUTHENTICATION
-function auth (req, res, next) {
+/*function auth (req, res, next) {
   console.log(req.user);
 
   if (!req.user) {
@@ -70,10 +71,10 @@ function auth (req, res, next) {
   else {
         next();
   }
-}
+}*/
 
 
-app.use(auth);
+//app.use(auth);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
